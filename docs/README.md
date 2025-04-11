@@ -30,7 +30,7 @@ The chatbot follows a **modular agent-based architecture**, where each agent has
 ### Steps
 1. Clone the repository:
    ```sh
-   git clone https://github.com/your-repo/customer-service-chatbot.git
+   git clone https://github.com/AlokTheDataGuy/customer-service-chatbot.git
    cd customer-service-chatbot
    ```
 2. Install dependencies:
