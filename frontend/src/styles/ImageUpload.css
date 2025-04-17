@@ -1,0 +1,72 @@
+.image-upload {
+  margin-bottom: var(--spacing-md);
+}
+
+.file-input {
+  display: none;
+}
+
+.upload-button {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: transparent;
+  border: 1px dashed rgba(128, 128, 128, 0.3);
+  border-radius: var(--border-radius);
+  color: var(--text-color);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.upload-button:hover {
+  background-color: rgba(128, 128, 128, 0.1);
+}
+
+.preview-container {
+  position: relative;
+  display: inline-block;
+  margin-top: var(--spacing-sm);
+}
+
+.image-preview {
+  max-width: 200px;
+  max-height: 150px;
+  border-radius: var(--border-radius-sm);
+  border: 1px solid rgba(128, 128, 128, 0.2);
+}
+
+.cancel-button {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(128, 128, 128, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  color: #666;
+  transition: all 0.2s ease;
+}
+
+.cancel-button:hover {
+  background-color: #f44336;
+  color: white;
+}
+
+/* Dark mode adjustments */
+@media (prefers-color-scheme: dark) {
+  .upload-button {
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+  
+  .cancel-button {
+    background-color: rgba(40, 40, 40, 0.9);
+    color: #ccc;
+  }
+}

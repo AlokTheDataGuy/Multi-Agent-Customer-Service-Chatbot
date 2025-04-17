@@ -1,0 +1,85 @@
+:root {
+  /* Light mode colors */
+  --primary-bg-light: #f5f5f5;
+  --user-bubble-light: #e0f2fe;
+  --assistant-bubble-light: #f0fdf4;
+  --text-light: #213547;
+  
+  /* Dark mode colors */
+  --primary-bg-dark: #1a1a1a;
+  --user-bubble-dark: #1e3a8a;
+  --assistant-bubble-dark: #064e3b;
+  --text-dark: rgba(255, 255, 255, 0.87);
+  
+  /* Accent color (same for both modes) */
+  --accent-color: #4f46e5;
+  
+  /* Shadows and borders */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --border-radius: 12px;
+  --border-radius-sm: 4px;
+  
+  /* Spacing */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  
+  /* Font sizes */
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  
+  /* Apply light mode by default */
+  --primary-bg: var(--primary-bg-light);
+  --user-bubble: var(--user-bubble-light);
+  --assistant-bubble: var(--assistant-bubble-light);
+  --text-color: var(--text-light);
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --primary-bg: var(--primary-bg-dark);
+    --user-bubble: var(--user-bubble-dark);
+    --assistant-bubble: var(--assistant-bubble-dark);
+    --text-color: var(--text-dark);
+  }
+}
+
+/* Global styles */
+body {
+  background-color: var(--primary-bg);
+  color: var(--text-color);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  margin: 0;
+  padding: 0;
+  line-height: 1.5;
+}
+
+/* Utility classes */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+}
+
+.accent-text {
+  color: var(--accent-color);
+}
+
+.accent-bg {
+  background-color: var(--accent-color);
+  color: white;
+}
+
+.shadow-sm {
+  box-shadow: var(--shadow-sm);
+}
+
+.shadow-md {
+  box-shadow: var(--shadow-md);
+}

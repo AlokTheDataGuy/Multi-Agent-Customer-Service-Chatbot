@@ -1,0 +1,123 @@
+import { useState, useEffect, useRef } from 'react'
+import './App.css'
+import { sendChatMessage } from './services/api'
+
+function App() {
+  const [messages, setMessages] = useState([
+    { text: 'Hello! I\'m your e-commerce assistant. How can I help you today?', isUser: false }
+  ]);
+  const [input, setInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [sessionId, setSessionId] = useState(null);
+  const messagesEndRef = useRef(null);
+
+  // Generate a session ID when the component mounts
+  useEffect(() => {
+    setSessionId(`session_${Date.now()}`);
+  }, []);
+
+  // Scroll to bottom of messages
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
+  const handleSendMessage = async (e) => {
+    e.preventDefault();
+
+    if (!input.trim()) return;
+
+    // Add user message to chat
+    const userMessage = { text: input, isUser: true };
+    setMessages(prev => [...prev, userMessage]);
+    setInput('');
+    setIsLoading(true);
+
+    try {
+      // Send message to API
+      const response = await sendChatMessage(input, null, sessionId);
+
+      // Add bot response to chat
+      const botMessage = { text: response.response, isUser: false };
+      setMessages(prev => [...prev, botMessage]);
+
+      // If there are product recommendations, display them
+      if (response.additional_data && response.additional_data.products && response.additional_data.products.length > 0) {
+        const products = response.additional_data.products;
+        // Add product recommendations as a bot message
+        const productMessage = {
+          text: `Here are some products that might interest you:\n${products.map((p, i) => `${i+1}. **${p.name}** - $${p.price.toFixed(2)}`).join('\n')}`,
+          isUser: false,
+          isProductList: true
+        };
+        setMessages(prev => [...prev, productMessage]);
+      }
+
+    } catch (error) {
+      console.error('Error sending message:', error);
+      // Add error message to chat
+      const errorMessage = {
+        text: 'Sorry, there was an error processing your request. Please try again.',
+        isUser: false
+      };
+      setMessages(prev => [...prev, errorMessage]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Function to format message text with markdown-like syntax
+  const formatMessage = (text) => {
+    if (!text) return '';
+
+    // Replace ** for bold
+    let formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+    // Replace newlines with <br>
+    formattedText = formattedText.replace(/\n/g, '<br>');
+
+    return formattedText;
+  };
+
+  return (
+    <div className="app-container">
+      <header className="chat-header">
+        <h1>E-Commerce Assistant</h1>
+      </header>
+
+      <div className="chat-container">
+        <div className="chat-messages">
+          {messages.map((message, index) => (
+            <div key={index} className={`message ${message.isUser ? 'user' : 'bot'}`}>
+              <div className="message-content">
+                <div dangerouslySetInnerHTML={{ __html: formatMessage(message.text) }} />
+              </div>
+            </div>
+          ))}
+          {isLoading && (
+            <div className="message bot">
+              <div className="message-content">
+                <p>Typing...</p>
+              </div>
+            </div>
+          )}
+          <div ref={messagesEndRef} />
+        </div>
+
+        <form className="chat-input" onSubmit={handleSendMessage}>
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Type your message here..."
+            disabled={isLoading}
+          />
+          <button type="submit" disabled={isLoading}>
+            Send
+          </button>
+        </form>
+      </div>
+    </div>
+  )
+}
+
+export default App
